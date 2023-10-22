@@ -6,11 +6,26 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: Tariffs
+        - id: Tariffs-service
           uri: http://${TARIFFS_HOST:localhost}:${TARIFFS_PORT:8082}
           predicates:
             - Path=/tariffs/**
-        - id: Products
+          filters:
+            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
+        - id: Products-service
           uri: http://${PRODUCTS_HOST:localhost}:${PRODUCTS_PORT:8081}
           predicates:
             - Path=/products/**
+          filters:
+            - RewritePath=/products/(?<segment>.*),/$\{segment}
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /tariffs/v3/api-docs
+        name: Tariffs-service
+      - url: /products/v3/api-docs
+        name: Products-service

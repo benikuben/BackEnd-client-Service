@@ -6,10 +6,10 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: Tariffs-service
-          uri: http://${TARIFFS_HOST:localhost}:${TARIFFS_PORT:8082}
+        - id: ClientAccount-service
+          uri: http://${CLIENT_HOST:localhost}:${CLIENT_PORT:8080}
           predicates:
-            - Path=/tariffs/**
+            - Path=/accounts/**
           filters:
             - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
         - id: Products-service
@@ -17,7 +17,19 @@ spring:
           predicates:
             - Path=/products/**
           filters:
-            - RewritePath=/products/(?<segment>.*),/$\{segment}
+            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
+        - id: Tariffs-service
+          uri: http://${TARIFFS_HOST:localhost}:${TARIFFS_PORT:8082}
+          predicates:
+            - Path=/tariffs/**
+          filters:
+            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
+        - id: AuthValid-service
+          uri: http://${AUTH_HOST:localhost}:${AUTH_PORT:8084}
+          predicates:
+            - Path=/auth/**
+          filters:
+            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
 springdoc:
   api-docs:
     enabled: true
@@ -25,7 +37,12 @@ springdoc:
     enabled: true
     config-url: /v3/api-docs/swagger-config
     urls:
-      - url: /tariffs/v3/api-docs
-        name: Tariffs-service
+      - url: /accounts/v3/api-docs
+        name: ClientAccount-service
       - url: /products/v3/api-docs
         name: Products-service
+      - url: /tariffs/v3/api-docs
+        name: Tariffs-service
+      - url: /auth/v3/api-docs
+        name: AuthValid-service
+

@@ -11,13 +11,13 @@ spring:
           predicates:
             - Path=/accounts/**
           filters:
-            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
+            - RewritePath=/accounts/(?<segment>.*),/$\{segment}
         - id: Products-service
           uri: http://${PRODUCTS_HOST:localhost}:${PRODUCTS_PORT:8081}
           predicates:
             - Path=/products/**
           filters:
-            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
+            - RewritePath=/products/(?<segment>.*),/$\{segment}
         - id: Tariffs-service
           uri: http://${TARIFFS_HOST:localhost}:${TARIFFS_PORT:8082}
           predicates:
@@ -29,7 +29,7 @@ spring:
           predicates:
             - Path=/auth/**
           filters:
-            - RewritePath=/tariffs/(?<segment>.*),/$\{segment}
+            - RewritePath=/auth/(?<segment>.*),/$\{segment}
 springdoc:
   api-docs:
     enabled: true
